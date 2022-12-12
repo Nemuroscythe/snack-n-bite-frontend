@@ -5,6 +5,10 @@ export function getDishes(){
     return apiClient.get("/dishes");
 }
 
+export function getDish(dish_id:String){
+    return apiClient.get("/dishes/" + dish_id);
+}
+
 export function createDish(dish:Dish){
     return apiClient.post("/dishes", dish);
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { deleteDish, getDish, getDishes } from "../api/DishService";
+import { createDish, deleteDish, getDish, getDishes } from "../api/DishService";
 import Dish from "../model/Dish";
 import DishDetail from "../model/DishDetail";
 
@@ -12,9 +12,22 @@ export default function Menu() {
     console.log(Object.entries(dishes));
   }, []);
 
+  const onChangeHandler = (event) => {
+    const {value, name} = event.target;
+    console.warn(event.target)
+    setSelectedDish({...selectedDish, [name]: value});
+    console.log(selectedDish);
+  }
+
   function selectHandler(dish: Dish) {
     console.debug(Object.entries(dish));
     getDish(dish.id).then((result) => setSelectedDish(result.data));
+  }
+
+  const createHandler = (event) => {
+    event.preventDefault();
+    createDish(selectedDish)
+        .then(() => console.log('Successfully created dish'));
   }
 
   function deleteHandler() {
@@ -44,19 +57,19 @@ export default function Menu() {
       </div>
       <div className="input-group mb-3">
         <span className="input-group-text" id="basic-addon1">Nom </span>
-        <input type="text" className="form-control" placeholder="burger" value={selectedDish?.name} aria-label="Name" aria-describedby="basic-addon1"/>
+        <input type="text" className="form-control" placeholder="burger" value={selectedDish?.name} onChange={onChangeHandler} name="name" aria-label="Name" aria-describedby="basic-addon1"/>
       </div>
       <div className="input-group mb-3">
         <span className="input-group-text" id="basic-addon1">Liste d'ingrédients </span>
-        <input type="text" className="form-control" placeholder="Bun, Onion, Meat patty" value={selectedDish?.ingredients} aria-label="Ingredients" aria-describedby="basic-addon1"/>
+        <input type="text" className="form-control" placeholder="Bun, Onion, Meat patty" value={selectedDish?.ingredients} onChange={onChangeHandler} name="ingredients" aria-label="Ingredients" aria-describedby="basic-addon1"/>
       </div>
       <div className="input-group mb-3">
         <span className="input-group-text" id="basic-addon1">Prix </span>
-        <input type="text" className="form-control" placeholder="10" aria-label="UnitPrice" value={selectedDish?.unit_price} aria-describedby="basic-addon1"/>
+        <input type="text" className="form-control" placeholder="10" aria-label="UnitPrice" value={selectedDish?.unit_price} onChange={onChangeHandler} name="unit_price" aria-describedby="basic-addon1"/>
         <span className="input-group-text">€</span>
       </div>
       <div className="dropdown">
-        <button className="btn btn-secondary" type="button" aria-expanded="false">
+        <button className="btn btn-secondary" type="button" aria-expanded="false"  onClick={createHandler}>
           Créer
         </button>
         <button className="btn btn-secondary" type="button" aria-expanded="false">

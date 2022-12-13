@@ -12,7 +12,7 @@ export default function Menu() {
     console.log(Object.entries(dishes));
   }, []);
 
-  function selectDish(dish: Dish) {
+  function selectHandler(dish: Dish) {
     console.debug(Object.entries(dish));
     getDish(dish.id).then((result) => setSelectedDish(result.data));
   }
@@ -36,11 +36,15 @@ export default function Menu() {
       <div className="container">
         {dishes.map((dish, index) => (
           <div className="col">
-            <button key={index}  type="button" className="btn btn-light btn-block" onClick={() => selectDish(dish)}>
+            <button key={index}  type="button" className="btn btn-light btn-block" onClick={() => selectHandler(dish)}>
               {dish.name}
             </button>
           </div>
         ))}
+      </div>
+      <div className="input-group mb-3">
+        <span className="input-group-text" id="basic-addon1">Nom </span>
+        <input type="text" className="form-control" placeholder="burger" value={selectedDish?.name} aria-label="Name" aria-describedby="basic-addon1"/>
       </div>
       <div className="input-group mb-3">
         <span className="input-group-text" id="basic-addon1">Liste d'ingrédients </span>

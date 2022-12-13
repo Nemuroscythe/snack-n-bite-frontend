@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getDish, getDishes } from "../api/DishService";
+import { deleteDish, getDish, getDishes } from "../api/DishService";
 import Dish from "../model/Dish";
 import DishDetail from "../model/DishDetail";
 
@@ -13,8 +13,22 @@ export default function Menu() {
   }, []);
 
   function selectDish(dish: Dish) {
-    console.debug(Object.entries(dish))
+    console.debug(Object.entries(dish));
     getDish(dish.id).then((result) => setSelectedDish(result.data));
+  }
+
+  function deleteHandler() {
+    let newDishes : Dish[] = [...dishes];
+    console.debug("newDishes : ");
+    console.debug(newDishes);
+
+    deleteDish(selectedDish?.id).then(() =>
+      setDishes(
+        newDishes.filter((dish) => {
+          return dish.id != selectedDish.id;
+        })
+      )
+    );
   }
 
   return (
@@ -44,7 +58,7 @@ export default function Menu() {
         <button className="btn btn-secondary" type="button" aria-expanded="false">
           Modifier
         </button>
-        <button className="btn btn-secondary" type="button" aria-expanded="false">
+        <button className="btn btn-secondary" type="button" aria-expanded="false" onClick={ () => deleteHandler()}>
           Supprimer
         </button>
         

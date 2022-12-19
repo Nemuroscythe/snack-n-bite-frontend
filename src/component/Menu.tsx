@@ -55,7 +55,7 @@ export default function Menu() {
       .then(() => setDishes(newDishes));
   }
 
-  function deleteHandler() {
+  const deleteHandler = ()=> {
     let newDishes : Dish[] = [...dishes];
     console.debug("newDishes : ");
     console.debug(newDishes);
@@ -74,7 +74,7 @@ export default function Menu() {
       <div className="container">
         {dishes.map((dish, index) => (
           <div className="col">
-            <button key={index}  type="button" className="btn btn-light btn-block" onClick={() => selectHandler(dish)}>
+            <button key={index}  type="button" className="btn btn-light btn-block w-100" onClick={() => selectHandler(dish)}>
               {dish.name}
             </button>
           </div>
@@ -82,15 +82,15 @@ export default function Menu() {
       </div>
       <div className="input-group mb-3">
         <span className="input-group-text" id="basic-addon1">Nom </span>
-        <input type="text" className="form-control" placeholder="burger" value={selectedDish?.name} onChange={onChangeHandler} name="name" aria-label="Name" aria-describedby="basic-addon1"/>
+        <input type="text" className="form-control" placeholder="burger" value={selectedDish?.name} onChange={onChangeHandler} name="name"/>
       </div>
       <div className="input-group mb-3">
         <span className="input-group-text" id="basic-addon1">Liste d'ingrédients </span>
-        <input type="text" className="form-control" placeholder="Bun, Onion, Meat patty" value={selectedDish?.ingredients} onChange={onChangeHandler} name="ingredients" aria-label="Ingredients" aria-describedby="basic-addon1"/>
+        <input type="text" className="form-control" placeholder="Bun, Onion, Meat patty" value={selectedDish?.ingredients} onChange={onChangeHandler} name="ingredients"/>
       </div>
       <div className="input-group mb-3">
         <span className="input-group-text" id="basic-addon1">Prix </span>
-        <input type="text" className="form-control" placeholder="10" aria-label="UnitPrice" value={selectedDish?.unit_price} onChange={onChangeHandler} name="unit_price" aria-describedby="basic-addon1"/>
+        <input type="text" className="form-control" placeholder="10" value={selectedDish?.unit_price} onChange={onChangeHandler} name="unit_price"/>
         <span className="input-group-text">€</span>
       </div>
       <div className="dropdown">
@@ -100,7 +100,7 @@ export default function Menu() {
         <button className="btn btn-secondary" type="button" aria-expanded="false" onClick={updateHandler}>
           Modifier
         </button>
-        <button className="btn btn-secondary" type="button" aria-expanded="false" onClick={ () => deleteHandler()}>
+        <button className="btn btn-secondary" type="button" aria-expanded="false" onClick={deleteHandler}>
           Supprimer
         </button>
         

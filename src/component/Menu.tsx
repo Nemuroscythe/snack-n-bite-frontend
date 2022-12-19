@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { createDish, deleteDish, getDish, getDishes } from "../api/DishService";
+import { createDish, deleteDish, getDish, getDishes, updateDish } from "../api/DishService";
 import Dish from "../model/Dish";
 import DishDetail from "../model/DishDetail";
 
@@ -13,8 +13,11 @@ export default function Menu() {
   }, []);
 
   const onChangeHandler = (event) => {
-    const {value, name} = event.target;
+    let {value, name} = event.target;
     console.warn(event.target)
+    if(name == "ingredients"){
+      name = name.split(",");
+    }
     setSelectedDish({...selectedDish, [name]: value});
     console.log(selectedDish);
   }
@@ -26,8 +29,30 @@ export default function Menu() {
 
   const createHandler = (event) => {
     event.preventDefault();
+    let newDishes : Dish[] = [...dishes];
+    newDishes.push(new Dish(selectedDish?.id,
+      selectedDish?.name,
+      selectedDish?.unit_price))
+
     createDish(selectedDish)
-        .then(() => console.log('Successfully created dish'));
+      .then(() => console.log('Successfully created dish'))
+      .then(() => setDishes(newDishes));
+
+  }
+
+  const updateHandler = (event) => {
+    event.preventDefault();
+    let newDishes : Dish[] = [...dishes];
+    newDishes = newDishes.filter((dish) => {
+      return dish.id != selectedDish.id;
+    });
+    newDishes.push(new Dish(selectedDish?.id,
+      selectedDish?.name,
+      selectedDish?.unit_price))
+
+    updateDish(selectedDish)
+      .then(() => console.log('Successfully updated dish'))
+      .then(() => setDishes(newDishes));
   }
 
   function deleteHandler() {
@@ -69,10 +94,10 @@ export default function Menu() {
         <span className="input-group-text">€</span>
       </div>
       <div className="dropdown">
-        <button className="btn btn-secondary" type="button" aria-expanded="false"  onClick={createHandler}>
+        <button className="btn btn-secondary" type="button" aria-expanded="false" onClick={createHandler}>
           Créer
         </button>
-        <button className="btn btn-secondary" type="button" aria-expanded="false">
+        <button className="btn btn-secondary" type="button" aria-expanded="false" onClick={updateHandler}>
           Modifier
         </button>
         <button className="btn btn-secondary" type="button" aria-expanded="false" onClick={ () => deleteHandler()}>

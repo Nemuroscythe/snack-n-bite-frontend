@@ -75,7 +75,7 @@ export default function Menu() {
       let unitPriceErrorMessage = document.getElementById("unit_price error");
       let createButton = document.getElementById("createButton");
       let updateButton = document.getElementById("updateButton");
-      const unitPriceError = "unit_price error";
+      
       if (value <= 0) {
         console.warn("The unit price is negative or equal to 0.");
         unitPriceErrorMessage.hidden = false;

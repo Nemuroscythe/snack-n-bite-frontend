@@ -13,13 +13,13 @@ export default function Menu() {
   }, []);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if(!selectedDish){
+    if (!selectedDish) {
       return;
     }
 
     let { value, name } = event.target;
     console.warn(event.target);
-    
+
     validateField(name, value);
     setSelectedDish({ ...selectedDish, [name]: value });
     console.log(selectedDish);
@@ -31,14 +31,12 @@ export default function Menu() {
   }
 
   const createHandler = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if(!selectedDish){
+    if (!selectedDish) {
       return;
     }
 
     let newDishes: Dish[] = [...dishes];
-    newDishes.push(
-      new Dish(selectedDish?.id, selectedDish?.name, selectedDish?.unit_price)
-    );
+    newDishes.push(new Dish(selectedDish?.id, selectedDish?.name, selectedDish?.unit_price));
 
     createDish(selectedDish)
       .then(() => console.log("Successfully created dish"))
@@ -46,17 +44,15 @@ export default function Menu() {
   };
 
   const updateHandler = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if(!selectedDish){
+    if (!selectedDish) {
       return;
     }
-    
+
     let newDishes: Dish[] = [...dishes];
     newDishes = newDishes.filter((dish) => {
       return dish.id != selectedDish.id;
     });
-    newDishes.push(
-      new Dish(selectedDish?.id, selectedDish?.name, selectedDish?.unit_price)
-    );
+    newDishes.push(new Dish(selectedDish?.id, selectedDish?.name, selectedDish?.unit_price));
 
     updateDish(selectedDish)
       .then(() => console.log("Successfully updated dish"))
@@ -67,11 +63,11 @@ export default function Menu() {
     let newDishes: Dish[] = [...dishes];
     console.debug("newDishes : ");
     console.debug(newDishes);
-    
-    if(!selectedDish){
+
+    if (!selectedDish) {
       return;
     }
-    
+
     deleteDish(selectedDish?.id).then(() =>
       setDishes(
         newDishes.filter((dish) => {
@@ -86,7 +82,7 @@ export default function Menu() {
       let unitPriceErrorMessage = document.getElementById("unit_price error") as HTMLDivElement;
       let createButton = document.getElementById("createButton") as HTMLButtonElement;
       let updateButton = document.getElementById("updateButton") as HTMLButtonElement;
-      
+
       if (value <= 0) {
         console.warn("The unit price is negative or equal to 0.");
         unitPriceErrorMessage.hidden = false;
@@ -104,13 +100,9 @@ export default function Menu() {
     <>
       <div className="container">
         {dishes.map((dish) => (
-            <button
-              key={dish.id}
-              type="button"
-              className="btn btn-light btn-block w-100"
-              onClick={() => selectHandler(dish)}>
-              {dish.name}
-            </button>
+          <button key={dish.id} type="button" className="btn btn-light btn-block w-100" onClick={() => selectHandler(dish)}>
+            {dish.name}
+          </button>
         ))}
       </div>
       <div className="input-group mb-3">
@@ -155,39 +147,18 @@ export default function Menu() {
           required
         />
         <span className="input-group-text">€</span>
-        <div
-          className="error my-3 alert alert-danger"
-          id="unit_price error"
-          hidden={true}
-        >
+        <div className="error my-3 alert alert-danger" id="unit_price error" hidden={true}>
           <em>Le prix doit être positif et non nul !</em>
         </div>
       </div>
       <div className="dropdown">
-        <button
-          className="btn btn-secondary"
-          id="createButton"
-          type="button"
-          aria-expanded="false"
-          onClick={createHandler}
-        >
+        <button className="btn btn-secondary" id="createButton" type="button" aria-expanded="false" onClick={createHandler}>
           Créer
         </button>
-        <button
-          className="btn btn-secondary"
-          id="updateButton"
-          type="button"
-          aria-expanded="false"
-          onClick={updateHandler}
-        >
+        <button className="btn btn-secondary" id="updateButton" type="button" aria-expanded="false" onClick={updateHandler}>
           Modifier
         </button>
-        <button
-          className="btn btn-secondary"
-          type="button"
-          aria-expanded="false"
-          onClick={deleteHandler}
-        >
+        <button className="btn btn-secondary" type="button" aria-expanded="false" onClick={deleteHandler}>
           Supprimer
         </button>
       </div>

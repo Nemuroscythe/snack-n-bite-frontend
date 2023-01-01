@@ -12,12 +12,14 @@ export default function Menu() {
     console.log(Object.entries(dishes));
   }, []);
 
-  const onChangeHandler = (event) => {
+  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if(!selectedDish){
+      return;
+    }
+
     let { value, name } = event.target;
     console.warn(event.target);
-    if (name == "ingredients") {
-      name = name.split(",");
-    }
+    
     validateField(name, value);
     setSelectedDish({ ...selectedDish, [name]: value });
     console.log(selectedDish);
@@ -28,7 +30,10 @@ export default function Menu() {
     getDish(dish.id).then((result) => setSelectedDish(result.data));
   }
 
-  const createHandler = (event) => {
+  const createHandler = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if(!selectedDish){
+      return;
+    }
 
     let newDishes: Dish[] = [...dishes];
     newDishes.push(
@@ -40,9 +45,11 @@ export default function Menu() {
       .then(() => setDishes(newDishes));
   };
 
-  const updateHandler = (event) => {
-    event.preventDefault();
-
+  const updateHandler = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if(!selectedDish){
+      return;
+    }
+    
     let newDishes: Dish[] = [...dishes];
     newDishes = newDishes.filter((dish) => {
       return dish.id != selectedDish.id;
@@ -60,7 +67,11 @@ export default function Menu() {
     let newDishes: Dish[] = [...dishes];
     console.debug("newDishes : ");
     console.debug(newDishes);
-
+    
+    if(!selectedDish){
+      return;
+    }
+    
     deleteDish(selectedDish?.id).then(() =>
       setDishes(
         newDishes.filter((dish) => {
@@ -72,9 +83,9 @@ export default function Menu() {
 
   function validateField(name: any, value: any) {
     if (name == "unit_price") {
-      let unitPriceErrorMessage = document.getElementById("unit_price error");
-      let createButton = document.getElementById("createButton");
-      let updateButton = document.getElementById("updateButton");
+      let unitPriceErrorMessage = document.getElementById("unit_price error") as HTMLDivElement;
+      let createButton = document.getElementById("createButton") as HTMLButtonElement;
+      let updateButton = document.getElementById("updateButton") as HTMLButtonElement;
       
       if (value <= 0) {
         console.warn("The unit price is negative or equal to 0.");
@@ -92,17 +103,14 @@ export default function Menu() {
   return (
     <>
       <div className="container">
-        {dishes.map((dish, index) => (
-          <div className="col">
+        {dishes.map((dish) => (
             <button
-              key={index}
+              key={dish.id}
               type="button"
               className="btn btn-light btn-block w-100"
-              onClick={() => selectHandler(dish)}
-            >
+              onClick={() => selectHandler(dish)}>
               {dish.name}
             </button>
-          </div>
         ))}
       </div>
       <div className="input-group mb-3">
